@@ -1,8 +1,16 @@
 package com.mahesh.skillForge.config;
 
+import com.mahesh.skillForge.security.JwtAuthenticationFilter;
+import com.mahesh.skillForge.security.JwtUtil;
+import com.mahesh.skillForge.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,54 +25,60 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
-    // Password encoder bean (used in registration)
+    private final CustomUserDetailsService uds;
+    private final JwtUtil jwtUtil;
+
+    public SecurityConfig(CustomUserDetailsService uds, JwtUtil jwtUtil) {
+        this.uds = uds;
+        this.jwtUtil = jwtUtil;
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // Security filter chain: permit auth endpoints, secure others
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+    AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
+    builder.userDetailsService(uds).passwordEncoder(passwordEncoder());
+    return builder.build();
+}
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+        JwtAuthenticationFilter jwtFilter = new JwtAuthenticationFilter(jwtUtil, uds);
+
         http
-            // disable CSRF for API usage (if you later use cookies, re-evaluate)
             .csrf(csrf -> csrf.disable())
-
-            // CORS config (see corsFilter bean below)
             .cors(Customizer.withDefaults())
-
-            // stateless session — we'll use JWT tokens later
-            .sessionManagement(sm -> sm
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-
-            // authorize requests
+            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // public endpoints:
-                .requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/actuator/**").permitAll()
-                // everything else requires authentication
-                .anyRequest().authenticated()
+                    .requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/actuator/**").permitAll()
+                    .anyRequest().authenticated()
             )
-
-            // do not use default form login or httpBasic for now
+            .addFilterBefore(jwtFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
             .httpBasic(httpBasic -> httpBasic.disable())
             .formLogin(form -> form.disable());
 
         return http.build();
     }
 
-    // Simple CORS filter for local development — adjust allowed origins in production
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("*")); // change to specific origins in prod
+        // allow only the dev frontend origin — safer and avoids wildcard+credentials issue
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
+        // if you plan to send cookies/auth credentials from browser, set true; otherwise false
+        config.setAllowCredentials(false);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
-    }
+}
+
 }
