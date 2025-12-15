@@ -1,13 +1,13 @@
-com\mahesh\skillForge\repository\UserRepository.class
-com\mahesh\skillForge\dto\LoginRequest.class
-com\mahesh\skillForge\SkillForgeApplication.class
-com\mahesh\skillForge\security\JwtUtil.class
 com\mahesh\skillForge\service\SkillForgeService.class
 com\mahesh\skillForge\entity\User.class
 com\mahesh\skillForge\dto\LoginResponse.class
 com\mahesh\skillForge\security\JwtAuthenticationFilter.class
 com\mahesh\skillForge\repository\SkillForgerepository.class
 com\mahesh\skillForge\service\CustomUserDetailsService.class
+com\mahesh\skillForge\repository\UserRepository.class
+com\mahesh\skillForge\dto\LoginRequest.class
+com\mahesh\skillForge\SkillForgeApplication.class
+com\mahesh\skillForge\security\JwtUtil.class
 com\mahesh\skillForge\controller\AuthController.class
 com\mahesh\skillForge\service\UserService.class
 com\mahesh\skillForge\dto\UserRegisterDto.class

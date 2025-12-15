@@ -1,34 +1,51 @@
 package com.mahesh.skillForge.entity;
 
-
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "courses")
-
 public class Course {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 200)
     private String title;
-    @Column(length = 2000)
+
+    @Column(nullable = false, length = 2000)
     private String description;
 
-    @Column(name = "created_by")
-    private Long createdByUserId; // instructor id
+    @Column(nullable = false)
+    private String category;
+
+    @Column(nullable = false)
+    private String level; // Beginner / Intermediate / Advanced
+
+    private Boolean published = false;
+
+    @ManyToOne
+    @JoinColumn(name = "instructor_id", nullable = false)
+    private User instructor;
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // Getters and Setters
+    // getters & setters
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
     public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
     public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public Long getCreatedByUserId() { return createdByUserId; }
-    public void setCreatedByUserId(Long createdByUserId) { this.createdByUserId = createdByUserId; }
+    public String getCategory() { return category; }
+    public String getLevel() { return level; }
+    public Boolean isPublished() { return published; }
+    public User getInstructor() { return instructor; }
     public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public void setId(Long id) { this.id = id; }
+    public void setTitle(String title) { this.title = title; }
+    public void setDescription(String description) { this.description = description; }
+    public void setCategory(String category) { this.category = category; }
+    public void setLevel(String level) { this.level = level; }
+    public void setPublished(Boolean published) { this.published = published; }
+    public void setInstructor(User instructor) { this.instructor = instructor; }
 }
