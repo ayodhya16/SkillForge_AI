@@ -1,37 +1,103 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { logout } from "../services/auth";
+import { isAuthenticated, getRole, logout as authLogout } from "../services/auth";
 
 export default function Nav() {
   const navigate = useNavigate();
-  const role = localStorage.getItem("sf_role");
+  const [logged, setLogged] = useState(isAuthenticated());
+  const [role, setRole] = useState(getRole());
+
+  useEffect(() => {
+    const syncAuth = () => {
+      setLogged(isAuthenticated());
+      setRole(getRole());
+    };
+    syncAuth();
+    window.addEventListener("storage", syncAuth);
+    window.addEventListener("sf_auth_changed", syncAuth);
+    return () => {
+      window.removeEventListener("storage", syncAuth);
+      window.removeEventListener("sf_auth_changed", syncAuth);
+    };
+  }, []);
 
   function handleLogout() {
-    logout();
-    navigate("/login");
+    authLogout();
+    window.dispatchEvent(new Event("sf_auth_changed"));
+    navigate("/");
+  }
+
+  /* MENUS */
+  const guestMenu = [
+    { to: "/", label: "Home" },
+    { to: "/courses", label: "Courses" },
+    { to: "/certifications", label: "Certifications" },
+    { to: "/placements", label: "Placements" },
+    { to: "/contact", label: "Contact Us" },
+  ];
+
+  const studentMenu = [
+    { to: "/student/home", label: "Home" },
+    { to: "/student/courses", label: "Courses" },
+    { to: "/certifications", label: "Certifications" },
+    { to: "/placements", label: "Placements" },
+    { to: "/contact", label: "Contact Us" },
+  ];
+
+  const instructorMenu = [
+    { to: "/instructor/home", label: "Home" },
+    { to: "/instructor/courses", label: "Courses" },
+    { to: "/instructor/certifications", label: "Certifications" },
+    { to: "/instructor/exams", label: "Exams"},
+    { to: "/contact", label: "Contact Us" },
+  ];
+
+  const adminMenu = [
+    { to: "/admin/home", label: "Dashboard" },
+    { to: "/admin/manageusers", label: "Manage Users" },
+    { to: "/admin/viewstudents", label: "Students" },
+    { to: "/admin/viewexams", label: "Exams" },
+    { to: "/contact", label: "Contact Us" },
+  ];
+
+  let menu = guestMenu;
+  if (logged) {
+    if (role === "STUDENT") menu = studentMenu;
+    else if (role === "INSTRUCTOR") menu = instructorMenu;
+    else if (role === "ADMIN") menu = adminMenu;
   }
 
   return (
-    <nav className="bg-slate-800 border-b border-slate-700">
-      <div className="container flex items-center justify-between h-16">
-        <div className="flex items-center space-x-4">
-          <Link to="/" className="text-xl font-bold text-indigo-400">SkillForge</Link>
-        </div>
+    <header style={{ padding: 12, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", justifyContent: "space-between" }}>
+        <Link to="/" style={{ fontWeight: 800, color: "#7c3aed", fontSize: 20, textDecoration: "none" }}>
+          SkillForge
+        </Link>
 
-        <div className="flex items-center space-x-4">
-          {!role ? (
+        <nav style={{ display: "flex", gap: 16, alignItems: "center" }}>
+          {menu.map(m => (
+            <Link key={m.to} to={m.to} style={{ color: "#c4b5fd", textDecoration: "none" }}>
+              {m.label}
+            </Link>
+          ))}
+
+          {!logged ? (
             <>
-              <Link to="/login" className="text-slate-200 hover:text-white">Login</Link>
-              <Link to="/register" className="bg-indigo-600 text-white px-3 py-1 rounded">Register</Link>
+              <Link to="/login" style={{ color: "#c4b5fd" }}>Sign in</Link>
+              <Link to="/register" style={{ background: "#6d28d9", color: "#fff", padding: "6px 12px", borderRadius: 999 }}>
+                Create account
+              </Link>
             </>
           ) : (
-            <>
-              <span className="px-3 py-1 bg-slate-700 rounded text-sm">Role: {role}</span>
-              <button onClick={handleLogout} className="bg-red-600 px-3 py-1 rounded">Logout</button>
-            </>
+            <button
+              onClick={handleLogout}
+              style={{ background: "#6d28d9", color: "#fff", padding: "6px 12px", borderRadius: 999, border: "none" }}
+            >
+              Logout
+            </button>
           )}
-        </div>
+        </nav>
       </div>
-    </nav>
+    </header>
   );
 }

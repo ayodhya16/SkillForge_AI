@@ -1,25 +1,64 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* ---------- layout normalisation ---------- */
+*, *::before, *::after { box-sizing: border-box; }
 
-/* Use direct CSS values instead of @apply to avoid PostCSS timing issues */
-html, body, #root {
-  height: 100%;
+/* page container (optional) */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+
+/* the card that wraps the register form */
+.card-surface {
+  background: linear-gradient(180deg, rgba(12,18,28,0.6), rgba(6,10,15,0.5));
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.03);
+  border-radius: 12px;
+  padding: 1.5rem;          /* gives room inside the card */
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+  overflow: visible;       /* if you want rounded corners to show; switch to hidden if clipping necessary */
+  width: 100%;
+  max-width: 100%;
 }
 
-body {
-  /* Tailwind slate-900 ~ #0f1724 ; slate-100 ~ #f8fafc */
-  background-color: #0f1724;
+/* inner wrapper to ensure card padding is consistent */
+.card-inner { width: 100%; }
+
+/* INPUT / SELECT common */
+.form-input {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: #071127;                /* dark background for input */
+  border: 1px solid rgba(255,255,255,0.04);
   color: #e2e8f0;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-size: 0.95rem;
+  margin: 0.35rem 0;                  /* small vertical spacing */
+  outline: none;
+  -webkit-appearance: none;           /* helps on mobile */
 }
 
-.container {
-  max-width: 1100px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+/* when input is inside a flex row with icon, let it expand */
+.form-input[style] { flex: 1; } /* keeps inline style flex:1 working */
+
+/* focus */
+.form-input:focus {
+  box-shadow: 0 6px 20px rgba(79,70,229,0.12);
+  border-color: #4f46e5;
+}
+
+/* select same style */
+select.form-input { appearance: none; }
+
+/* label + icon container way to align */
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* keep actions aligned nicely */
+.form-actions { display:flex; justify-content:flex-end; margin-top:0.5rem; }
+
+/* responsive tweaks */
+@media (max-width: 640px) {
+  .card-surface { padding: 1rem; border-radius: 10px; }
 }
