@@ -11,23 +11,24 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 import StudentHome from "./pages/student/Home";
-import InstructorLayout from "./pages/instructor/InstructorLayout";
-import AdminHome from "./pages/admin/Home";
-
 import StudentCourses from "./pages/student/Courses";
 import MyCourses from "./pages/student/MyCourses";
 import LearnCourse from "./pages/student/LearnCourse";
+import Exams from "./pages/student/Exams";
 
-
+import InstructorHome from "./pages/instructor/Home";
+import InstructorDashboard from "./pages/instructor/Dashboard";
+import InstructorCourses from "./pages/instructor/Courses";
 import CreateCourse from "./pages/instructor/CreateCourse";
 import CourseContent from "./pages/instructor/CourseContent";
 
-
+import AdminHome from "./pages/admin/Home";
 import AdminManageUsers from "./pages/admin/ManageUsers";
 import ViewStudents from "./pages/admin/ViewStudents";
-import ViewExams from "./pages/admin/ViewExams";
+
 
 import RequireAuth from "./components/RequireAuth";
+import ContactUs from "./pages/Contactus";
 
 export default function App() {
   return (
@@ -37,7 +38,7 @@ export default function App() {
       <main style={{ padding: 20, maxWidth: 1100, margin: "0 auto" }}>
         <Routes>
 
-          {/*  Public routes */}
+          {/* Public */}
           <Route path="/" element={<Home />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/certifications" element={<Certifications />} />
@@ -46,33 +47,35 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/*  Student */}
+          {/* Student */}
           <Route element={<RequireAuth allowedRoles={["STUDENT"]} />}>
             <Route path="/student/home" element={<StudentHome />} />
             <Route path="/student/courses" element={<StudentCourses />} />
             <Route path="/student/my-courses" element={<MyCourses />} />
             <Route path="/student/courses/:courseId" element={<LearnCourse />} />
+            <Route path="/student/exams" element={<Exams />} />
           </Route>
-          
 
-          {/*  Instructor */}
+          {/* Instructor */}
           <Route element={<RequireAuth allowedRoles={["INSTRUCTOR"]} />}>
-            <Route path="/instructor/*" element={<InstructorLayout />} />
-            <Route path="/instructor/courses/:courseId/content" element={<CourseContent />} />
-
+            <Route path="/instructor/home" element={<InstructorHome />} />
+            <Route path="/instructor/dashboard" element={<InstructorDashboard />} />
+            <Route path="/instructor/courses" element={<InstructorCourses />} />
+            <Route path="/instructor/courses/:id" element={<CourseContent />} />  
+            <Route path="/instructor/certifications" element={<Certifications />} />
+            <Route path="/instructor/exams" element={<Exams />} />
+            <Route path="/contactus" element={<ContactUs />} />
+            
           </Route>
 
-          {/* 🛠 Admin */}
+          {/* Admin */}
           <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}>
             <Route path="/admin/home" element={<AdminHome />} />
             <Route path="/admin/manageusers" element={<AdminManageUsers />} />
             <Route path="/admin/viewstudents" element={<ViewStudents />} />
-            <Route path="/admin/viewexams" element={<ViewExams />} />
           </Route>
 
-          {/* fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
-
         </Routes>
       </main>
     </>

@@ -4,18 +4,36 @@ import Card from "../../components/Card";
 
 export default function InstructorDashboard() {
   const [courses, setCourses] = useState([]);
+  const [stats, setStats] = useState({
+    totalCourses: 0,
+    totalStudents: 0,
+    completedStudents: 0,
+  });
 
   useEffect(() => {
     axios.get("/api/instructor/courses")
       .then(res => setCourses(res.data));
   }, []);
 
+  useEffect(() => {
+    axios.get("/api/instructor/analytics")
+      .then(res => setStats(res.data));
+  }, []);
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">Instructor Dashboard</h1>
 
+      {/* Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card>Total Courses: {stats.totalCourses}</Card>
+        <Card>Total Students: {stats.totalStudents}</Card>
+        <Card>Completed Students: {stats.completedStudents}</Card>
+      </div>
+
+      {/* Courses */}
       <Card>
-        <h2 className="font-semibold mb-2">My Courses</h2>
+        <h2 className="font-semibold mb-3">My Courses</h2>
 
         {courses.length === 0 && (
           <div className="text-slate-400 text-sm">No courses yet</div>

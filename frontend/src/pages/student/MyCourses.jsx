@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
 import axios from "../../api/axiosInstance";
-import { Link } from "react-router-dom";
 import Card from "../../components/Card";
 
 export default function MyCourses() {
@@ -17,13 +15,14 @@ export default function MyCourses() {
 
       {enrollments.map(e => (
         <Card key={e.id}>
-          <div className="font-semibold">{e.course.title}</div>
-          <Link
-            to={`/student/courses/${e.course.id}`}
-            className="text-indigo-300 text-sm"
-          >
-            Continue Learning →
-          </Link>
+          <h2>{e.course.title}</h2>
+          <p>Progress: {e.progressPercentage}%</p>
+
+          {e.completed && (
+            <a href={`/api/student/certificates/${e.course.id}`}>
+              Download Certificate
+            </a>
+          )}
         </Card>
       ))}
     </div>

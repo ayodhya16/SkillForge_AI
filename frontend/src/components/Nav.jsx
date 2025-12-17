@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { isAuthenticated, getRole, logout as authLogout } from "../services/auth";
+import { isAuthenticated, getRole, logout } from "../services/auth";
 
 export default function Nav() {
   const navigate = useNavigate();
@@ -8,26 +8,24 @@ export default function Nav() {
   const [role, setRole] = useState(getRole());
 
   useEffect(() => {
-    const syncAuth = () => {
+    const sync = () => {
       setLogged(isAuthenticated());
       setRole(getRole());
     };
-    syncAuth();
-    window.addEventListener("storage", syncAuth);
-    window.addEventListener("sf_auth_changed", syncAuth);
+    window.addEventListener("storage", sync);
+    window.addEventListener("sf_auth_changed", sync);
     return () => {
-      window.removeEventListener("storage", syncAuth);
-      window.removeEventListener("sf_auth_changed", syncAuth);
+      window.removeEventListener("storage", sync);
+      window.removeEventListener("sf_auth_changed", sync);
     };
   }, []);
 
   function handleLogout() {
-    authLogout();
+    logout();
     window.dispatchEvent(new Event("sf_auth_changed"));
     navigate("/");
   }
 
-  /* MENUS */
   const guestMenu = [
     { to: "/", label: "Home" },
     { to: "/courses", label: "Courses" },
@@ -40,17 +38,21 @@ export default function Nav() {
     { to: "/student/home", label: "Home" },
     { to: "/student/courses", label: "Courses" },
     { to: "/certifications", label: "Certifications" },
+    { to: "/student/exams", label: "Exams"},
     { to: "/placements", label: "Placements" },
     { to: "/contact", label: "Contact Us" },
   ];
 
   const instructorMenu = [
-    { to: "/instructor/home", label: "Home" },
-    { to: "/instructor/courses", label: "Courses" },
-    { to: "/instructor/certifications", label: "Certifications" },
-    { to: "/instructor/exams", label: "Exams"},
-    { to: "/contact", label: "Contact Us" },
-  ];
+  { to: "/instructor/home", label: "Home" },
+  { to: "/instructor/dashboard", label: "Dashboard" },
+  { to: "/instructor/courses", label: "Courses" },
+  { to: "/instructor/certifications", label: "Certifications" },
+  { to: "/instructor/exams", label: "Exams" },
+  { to: "/contact", label: "Contact Us" }
+];
+
+
 
   const adminMenu = [
     { to: "/admin/home", label: "Dashboard" },
@@ -68,33 +70,26 @@ export default function Nav() {
   }
 
   return (
-    <header style={{ padding: 12, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+    <header style={{ padding: 12, borderBottom: "1px solid #222" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", justifyContent: "space-between" }}>
-        <Link to="/" style={{ fontWeight: 800, color: "#7c3aed", fontSize: 20, textDecoration: "none" }}>
+        <Link to="/" style={{ fontWeight: 800, fontSize: 20, color: "#7c3aed" }}>
           SkillForge
         </Link>
 
-        <nav style={{ display: "flex", gap: 16, alignItems: "center" }}>
+        <nav style={{ display: "flex", gap: 16 }}>
           {menu.map(m => (
-            <Link key={m.to} to={m.to} style={{ color: "#c4b5fd", textDecoration: "none" }}>
+            <Link key={m.to} to={m.to} style={{ color: "#c4b5fd" }}>
               {m.label}
             </Link>
           ))}
 
           {!logged ? (
             <>
-              <Link to="/login" style={{ color: "#c4b5fd" }}>Sign in</Link>
-              <Link to="/register" style={{ background: "#6d28d9", color: "#fff", padding: "6px 12px", borderRadius: 999 }}>
-                Create account
-              </Link>
+              <Link to="/login">Sign in</Link>
+              <Link to="/register">Create account</Link>
             </>
           ) : (
-            <button
-              onClick={handleLogout}
-              style={{ background: "#6d28d9", color: "#fff", padding: "6px 12px", borderRadius: 999, border: "none" }}
-            >
-              Logout
-            </button>
+            <button onClick={handleLogout}>Logout</button>
           )}
         </nav>
       </div>

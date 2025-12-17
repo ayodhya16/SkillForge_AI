@@ -76,9 +76,12 @@ export default function InstructorCourses() {
             </div>
 
             {!c.published && (
-              <Button onClick={() => publishCourse(c.id)} className="mt-2">
+              <button
+                onClick={() => publishCourse(c.id)}
+                className="absolute top-3 right-3 bg-indigo-600 px-3 py-1 rounded text-xs"
+              >
                 Publish
-              </Button>
+              </button>
             )}
           </div>
         ))}
