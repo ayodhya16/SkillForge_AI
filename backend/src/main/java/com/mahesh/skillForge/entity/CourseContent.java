@@ -3,7 +3,7 @@ package com.mahesh.skillForge.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "course_content")
+@Table(name = "course_contents")
 public class CourseContent {
 
     @Id
@@ -13,7 +13,7 @@ public class CourseContent {
     private String title;
 
     @Enumerated(EnumType.STRING)
-    private ContentType type; // VIDEO, LINK, PDF
+    private ContentType type; // VIDEO, LINK, PDF, TEXT
 
     @Column(length = 1000)
     private String url;

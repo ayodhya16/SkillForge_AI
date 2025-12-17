@@ -1,10 +1,16 @@
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\config\SecurityConfig.java
+C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\config\StaticConfig.java
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\controller\AdminUserController.java
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\controller\AuthController.java
+C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\controller\CertificateController.java
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\controller\CourseController.java
+C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\controller\InstructorAnalyticsController.java
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\controller\InstructorCourseContentController.java
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\controller\InstructorCourseController.java
+C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\controller\StudentCourseContentController.java
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\controller\StudentCourseController.java
+C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\controller\StudentEnrollmentController.java
+C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\controller\StudentProgressController.java
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\controller\UserController.java
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\dto\LoginRequest.java
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\dto\LoginResponse.java
@@ -35,6 +41,7 @@ C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\re
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\repository\UserRepository.java
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\security\JwtAuthenticationFilter.java
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\security\JwtUtil.java
+C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\service\CertificateService.java
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\service\CourseService.java
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\service\CustomUserDetailsService.java
 C:\Users\HP\Desktop\SkillForge_AI\backend\src\main\java\com\mahesh\skillForge\service\SkillForgeService.java

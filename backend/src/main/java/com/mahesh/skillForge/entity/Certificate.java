@@ -17,7 +17,7 @@ public class Certificate {
     @ManyToOne
     private Course course;
 
-    private String certificateCode;
+    private String filePath;
 
     private LocalDateTime issuedAt = LocalDateTime.now();
 
@@ -31,8 +31,8 @@ public class Certificate {
     public Course getCourse() { return course; }
     public void setCourse(Course course) { this.course = course; }
 
-    public String getCertificateCode() { return certificateCode; }
-    public void setCertificateCode(String certificateCode) { this.certificateCode = certificateCode; }
+    public String getfilePath() { return filePath; }
+    public void setfilePath(String filePath) { this.filePath = filePath; }
 
     public LocalDateTime getIssuedAt() { return issuedAt; }
 }

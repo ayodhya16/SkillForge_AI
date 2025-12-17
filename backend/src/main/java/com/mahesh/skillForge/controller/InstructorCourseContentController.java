@@ -1,6 +1,7 @@
 package com.mahesh.skillForge.controller;
 
-import com.mahesh.skillForge.entity.*;
+import com.mahesh.skillForge.entity.Course;
+import com.mahesh.skillForge.entity.CourseContent;
 import com.mahesh.skillForge.repository.CourseContentRepository;
 import com.mahesh.skillForge.repository.CourseRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,28 +17,25 @@ public class InstructorCourseContentController {
     private final CourseRepository courseRepo;
     private final CourseContentRepository contentRepo;
 
-    public InstructorCourseContentController(
-            CourseRepository courseRepo,
-            CourseContentRepository contentRepo) {
+    public InstructorCourseContentController(CourseRepository courseRepo, CourseContentRepository contentRepo) {
         this.courseRepo = courseRepo;
         this.contentRepo = contentRepo;
     }
 
-    // 🔹 Add content
-    @PostMapping("/courses/{courseId}/content")
-    public CourseContent addContent(
-            @PathVariable Long courseId,
-            @RequestBody CourseContent content) {
+    @PostMapping("/courses/{id}/content")
+public CourseContent addContent(
+        @PathVariable Long id,
+        @RequestBody CourseContent content) {
 
-        Course course = courseRepo.findById(courseId).orElseThrow();
-        content.setCourse(course);
-        return contentRepo.save(content);
-    }
+    Course course = courseRepo.findById(id).orElseThrow();
+    content.setCourse(course);
+    return contentRepo.save(content);
+}
 
-    // 🔹 View content (Instructor)
-    @GetMapping("/courses/{courseId}/content")
-    public List<CourseContent> getContent(@PathVariable Long courseId) {
-        Course course = courseRepo.findById(courseId).orElseThrow();
-        return contentRepo.findByCourseOrderByOrderIndexAsc(course);
-    }
+    @GetMapping("/courses/{id}/content")
+public List<CourseContent> getContent(@PathVariable Long id) {
+    Course course = courseRepo.findById(id).orElseThrow();
+    return contentRepo.findByCourseOrderByOrderIndexAsc(course);
+}
+
 }

@@ -23,6 +23,7 @@ public class Course {
     @Column(nullable = false)
     private String level; // Beginner / Intermediate / Advanced
 
+    @Column(name = "published", nullable = false)
     private Boolean published = false;
 
     @ManyToOne
@@ -37,7 +38,7 @@ public class Course {
     public String getDescription() { return description; }
     public String getCategory() { return category; }
     public String getLevel() { return level; }
-    public Boolean isPublished() { return published; }
+    public Boolean getPublished() { return published; }
     public User getInstructor() { return instructor; }
     public LocalDateTime getCreatedAt() { return createdAt; }
 

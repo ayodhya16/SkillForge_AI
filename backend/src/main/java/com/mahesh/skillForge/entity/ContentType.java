@@ -1,5 +1,5 @@
 package com.mahesh.skillForge.entity;
 
 public enum ContentType {
-    VIDEO, LINK, PDF
+    VIDEO, LINK, PDF, TEXT
 }
