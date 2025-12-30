@@ -37,7 +37,7 @@ export default function Nav() {
   const studentMenu = [
     { to: "/student/home", label: "Home" },
     { to: "/student/courses", label: "Courses" },
-    { to: "/certifications", label: "Certifications" },
+    { to: "/student/certifications", label: "Certifications" },
     { to: "/student/exams", label: "Exams"},
     { to: "/placements", label: "Placements" },
     { to: "/contact", label: "Contact Us" },
@@ -53,11 +53,11 @@ export default function Nav() {
 ];
 
 
-
   const adminMenu = [
     { to: "/admin/home", label: "Dashboard" },
     { to: "/admin/manageusers", label: "Manage Users" },
     { to: "/admin/viewstudents", label: "Students" },
+    { to: "/admin/Certifications", label: "Certifications" },
     { to: "/admin/viewexams", label: "Exams" },
     { to: "/contact", label: "Contact Us" },
   ];

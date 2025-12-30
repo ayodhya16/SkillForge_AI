@@ -15,12 +15,17 @@ import StudentCourses from "./pages/student/Courses";
 import MyCourses from "./pages/student/MyCourses";
 import LearnCourse from "./pages/student/LearnCourse";
 import Exams from "./pages/student/Exams";
+import StudentCertifications from "./pages/student/Certifications";
 
 import InstructorHome from "./pages/instructor/Home";
 import InstructorDashboard from "./pages/instructor/Dashboard";
 import InstructorCourses from "./pages/instructor/Courses";
 import CreateCourse from "./pages/instructor/CreateCourse";
 import CourseContent from "./pages/instructor/CourseContent";
+import InstructorCertifications from "./pages/instructor/Certifications";
+import InstructorExams from "./pages/instructor/Exams";
+import CreateExam from "./pages/instructor/CreateExam";
+
 
 import AdminHome from "./pages/admin/Home";
 import AdminManageUsers from "./pages/admin/ManageUsers";
@@ -54,6 +59,8 @@ export default function App() {
             <Route path="/student/my-courses" element={<MyCourses />} />
             <Route path="/student/courses/:courseId" element={<LearnCourse />} />
             <Route path="/student/exams" element={<Exams />} />
+            <Route path="/student/certifications" element={<StudentCertifications />} />            
+            
           </Route>
 
           {/* Instructor */}
@@ -62,8 +69,9 @@ export default function App() {
             <Route path="/instructor/dashboard" element={<InstructorDashboard />} />
             <Route path="/instructor/courses" element={<InstructorCourses />} />
             <Route path="/instructor/courses/:id" element={<CourseContent />} />  
-            <Route path="/instructor/certifications" element={<Certifications />} />
-            <Route path="/instructor/exams" element={<Exams />} />
+            <Route path="/instructor/certifications" element={<InstructorCertifications />} />
+            <Route path="/instructor/exams" element={<InstructorExams />} />
+            <Route path="/instructor/exams/create/:courseId" element={<CreateExam />} />
             <Route path="/contactus" element={<ContactUs />} />
             
           </Route>
@@ -73,6 +81,7 @@ export default function App() {
             <Route path="/admin/home" element={<AdminHome />} />
             <Route path="/admin/manageusers" element={<AdminManageUsers />} />
             <Route path="/admin/viewstudents" element={<ViewStudents />} />
+            <Route path="/admin/certifications" element={<Certifications />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -3,7 +3,7 @@ import axios from "../../api/axiosInstance";
 import CourseCard from "../../components/CourseCard";
 import Card from "../../components/Card";
 
-export default function InstructorHome() {
+export default function Home() {
   const [courses, setCourses] = useState([]);
 
   const loadCourses = () => {

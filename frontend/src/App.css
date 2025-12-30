@@ -40,3 +40,23 @@
 .read-the-docs {
   color: #888;
 }
+
+.hero-bg {
+  height: 100vh;
+  background: linear-gradient(
+    -45deg,
+    #0f172a,
+    #020617,
+    #0b1120,
+    #020617
+  );
+  background-size: 300% 300%;
+  animation: gradient 12s ease infinite;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+

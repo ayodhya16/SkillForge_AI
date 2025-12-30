@@ -3,7 +3,7 @@ import axios from "../../api/axiosInstance";
 import Card from "../../components/Card";
 import Button from "../../components/Button";
 
-export default function InstructorCourses() {
+export default function Courses() {
   const [courses, setCourses] = useState([]);
   const [form, setForm] = useState({
     title: "",

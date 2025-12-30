@@ -1,4 +1,4 @@
-export default function Courses(){
+export default function Exams(){
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">Exams</h2>

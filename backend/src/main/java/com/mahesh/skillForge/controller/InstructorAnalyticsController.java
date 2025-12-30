@@ -8,9 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.mahesh.skillForge.entity.User;
-import com.mahesh.skillForge.repository.CourseRepository;
-import com.mahesh.skillForge.repository.EnrollmentRepository;
-import com.mahesh.skillForge.repository.UserRepository;
+import com.mahesh.skillForge.repository.*;
 
 @RestController
 @RequestMapping("/api/instructor")
@@ -31,18 +29,15 @@ public class InstructorAnalyticsController {
     }
 
     @GetMapping("/analytics")
-    public Map<String, Object> analytics(Principal principal) {
+    public Map<String, Long> analytics(Principal principal) {
 
-        User instructor =
-            userRepo.findByEmail(principal.getName()).orElseThrow();
+        User instructor = userRepo.findByEmail(principal.getName()).orElseThrow();
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("totalCourses",
-                courseRepo.countByInstructor(instructor));
-        data.put("totalStudents",
-                enrollmentRepo.totalStudents(instructor.getId()));
+        Map<String, Long> data = new HashMap<>();
+        data.put("totalCourses", courseRepo.countByInstructor(instructor));
+        data.put("totalStudents", enrollmentRepo.countByCourseInstructorId(instructor.getId()));
         data.put("completedStudents",
-                enrollmentRepo.completedStudents(instructor.getId()));
+                enrollmentRepo.countByCompletedTrueAndCourseInstructorId(instructor.getId()));
 
         return data;
     }

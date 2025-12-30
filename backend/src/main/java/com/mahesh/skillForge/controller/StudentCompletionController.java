@@ -16,46 +16,40 @@ import com.mahesh.skillForge.service.CertificateService;
 @RestController
 @RequestMapping("/api/student")
 @PreAuthorize("hasRole('STUDENT')")
-public class StudentProgressController {
+public class StudentCompletionController {
 
     private final EnrollmentRepository enrollmentRepo;
     private final CourseRepository courseRepo;
     private final UserRepository userRepo;
     private final CertificateService certificateService;
 
-    public StudentProgressController(
+    public StudentCompletionController(
             EnrollmentRepository enrollmentRepo,
             CourseRepository courseRepo,
             UserRepository userRepo,
             CertificateService certificateService) {
-
         this.enrollmentRepo = enrollmentRepo;
         this.courseRepo = courseRepo;
         this.userRepo = userRepo;
         this.certificateService = certificateService;
     }
 
-    // ✅ COMPLETE COURSE + GENERATE CERTIFICATE
     @PostMapping("/courses/{courseId}/complete")
     public String completeCourse(
             @PathVariable Long courseId,
             Principal principal) {
 
-        User student =
-            userRepo.findByEmail(principal.getName()).orElseThrow();
+        User student = userRepo.findByEmail(principal.getName()).orElseThrow();
+        Course course = courseRepo.findById(courseId).orElseThrow();
 
-        Course course =
-            courseRepo.findById(courseId).orElseThrow();
-
-        Enrollment enrollment =
-            enrollmentRepo.findByStudentAndCourse(student, course)
-                .orElseThrow(() ->
-                    new RuntimeException("Not enrolled in this course"));
+        Enrollment enrollment = enrollmentRepo
+                .findByStudentAndCourse(student, course)
+                .orElseThrow();
 
         enrollment.setCompleted(true);
         enrollmentRepo.save(enrollment);
 
-        certificateService.generate(student, course);
+        certificateService.generateCertificate(student, course);
 
         return "Course completed & certificate generated";
     }

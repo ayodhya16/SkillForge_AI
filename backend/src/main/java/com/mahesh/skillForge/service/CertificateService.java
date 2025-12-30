@@ -1,56 +1,38 @@
 package com.mahesh.skillForge.service;
 
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-import com.mahesh.skillForge.entity.Course;
-import com.mahesh.skillForge.entity.User;
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.time.LocalDateTime;
+import com.mahesh.skillForge.entity.Certificate;
+import com.mahesh.skillForge.entity.Course;
+import com.mahesh.skillForge.entity.User;
+import com.mahesh.skillForge.repository.CertificateRepository;
 
 @Service
 public class CertificateService {
 
-    private static final String BASE_DIR = "certificates";
+    private final CertificateRepository certificateRepo;
 
-    public String generate(User student, Course course) {
-
-        try {
-            File dir = new File(BASE_DIR);
-            if (!dir.exists()) dir.mkdirs();
-
-            String fileName =
-                "CERT_" + student.getId() + "_" + course.getId() + ".pdf";
-
-            String filePath = BASE_DIR + "/" + fileName;
-
-            PdfWriter writer = new PdfWriter(filePath);
-            PdfDocument pdf = new PdfDocument(writer);
-            Document doc = new Document(pdf);
-
-            doc.add(new Paragraph("CERTIFICATE OF COMPLETION")
-                    .setBold().setFontSize(22));
-
-            doc.add(new Paragraph("\nThis is to certify that\n"));
-            doc.add(new Paragraph(student.getName())
-                    .setBold().setFontSize(18));
-
-            doc.add(new Paragraph("\nhas successfully completed the course\n"));
-
-            doc.add(new Paragraph(course.getTitle())
-                    .setBold().setFontSize(16));
-
-            doc.add(new Paragraph("\nIssued on: " + LocalDateTime.now()));
-
-            doc.close();
-
-            return filePath;
-
-        } catch (Exception e) {
-            throw new RuntimeException("Certificate generation failed", e);
-        }
+    public CertificateService(CertificateRepository certificateRepo) {
+        this.certificateRepo = certificateRepo;
     }
+
+    public void generateCertificate(User student, Course course) {
+
+        if (certificateRepo.existsByStudentAndCourse(student, course)) {
+            return;
+        }
+
+        Certificate certificate = new Certificate();
+        certificate.setStudent(student);
+        certificate.setCourse(course);
+        certificate.setIssuedAt(LocalDateTime.now());
+        certificate.setCertificateUrl(
+            "/certificates/" + student.getId() + "_" + course.getId() + ".pdf"
+        );
+
+        certificateRepo.save(certificate);
+    }
+
 }

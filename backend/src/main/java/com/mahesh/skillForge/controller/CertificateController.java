@@ -1,53 +1,41 @@
 package com.mahesh.skillForge.controller;
 
-import java.security.Principal;
-
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.mahesh.skillForge.entity.Course;
-import com.mahesh.skillForge.entity.Enrollment;
 import com.mahesh.skillForge.entity.User;
 import com.mahesh.skillForge.repository.CourseRepository;
-import com.mahesh.skillForge.repository.EnrollmentRepository;
 import com.mahesh.skillForge.repository.UserRepository;
 import com.mahesh.skillForge.service.CertificateService;
 
 @RestController
-@RequestMapping("/api/student")
-@PreAuthorize("hasRole('STUDENT')")
+@RequestMapping("/api/certificates")
+@PreAuthorize("hasRole('ADMIN')")
 public class CertificateController {
 
-    private final EnrollmentRepository enrollRepo;
-    private final CourseRepository courseRepo;
-    private final UserRepository userRepo;
     private final CertificateService certService;
+    private final UserRepository userRepo;
+    private final CourseRepository courseRepo;
 
     public CertificateController(
-        EnrollmentRepository enrollRepo,
-        CourseRepository courseRepo,
-        UserRepository userRepo,
-        CertificateService certService) {
-        this.enrollRepo = enrollRepo;
-        this.courseRepo = courseRepo;
-        this.userRepo = userRepo;
+            CertificateService certService,
+            UserRepository userRepo,
+            CourseRepository courseRepo) {
         this.certService = certService;
+        this.userRepo = userRepo;
+        this.courseRepo = courseRepo;
     }
 
-    @PostMapping("/courses/{id}/complete")
-    public String complete(@PathVariable Long id, Principal principal) {
-        User student = userRepo.findByEmail(principal.getName()).orElseThrow();
-        Course course = courseRepo.findById(id).orElseThrow();
+    @PostMapping("/generate")
+    public String generateCertificate(
+            @RequestParam Long userId,
+            @RequestParam Long courseId) {
 
-        Enrollment e = enrollRepo.findByStudentAndCourse(student, course).orElseThrow();
-        e.setCompleted(true);
-        enrollRepo.save(e);
+        User user = userRepo.findById(userId).orElseThrow();
+        Course course = courseRepo.findById(courseId).orElseThrow();
 
-        certService.generate(student, course);
+        certService.generateCertificate(user, course);
         return "Certificate generated";
     }
 }
-

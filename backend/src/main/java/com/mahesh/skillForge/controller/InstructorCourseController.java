@@ -49,4 +49,3 @@ public class InstructorCourseController {
         return courseRepo.save(c);
     }
 }
-

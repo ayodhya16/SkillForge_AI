@@ -23,6 +23,10 @@ public class Course {
     @Column(nullable = false)
     private String level; // Beginner / Intermediate / Advanced
 
+    @Column(name = "thumbnail_url")
+    private String thumbnailUrl;
+
+
     @Column(name = "published", nullable = false)
     private Boolean published = false;
 
@@ -41,6 +45,9 @@ public class Course {
     public Boolean getPublished() { return published; }
     public User getInstructor() { return instructor; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public String getThumbnailUrl() { return thumbnailUrl; }
+    public void setThumbnailUrl(String thumbnailUrl) { this.thumbnailUrl = thumbnailUrl; }
+    
 
     public void setId(Long id) { this.id = id; }
     public void setTitle(String title) { this.title = title; }
@@ -49,4 +56,5 @@ public class Course {
     public void setLevel(String level) { this.level = level; }
     public void setPublished(Boolean published) { this.published = published; }
     public void setInstructor(User instructor) { this.instructor = instructor; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

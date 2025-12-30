@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../api/axiosInstance";
 
-export default function StudentCourseContent({ courseId }) {
+export default function CourseContent({ courseId }) {
   const [contents, setContents] = useState([]);
 
   useEffect(() => {

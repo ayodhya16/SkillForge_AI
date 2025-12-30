@@ -1,7 +1,7 @@
 package com.mahesh.skillForge.entity;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "certificates")
@@ -17,9 +17,9 @@ public class Certificate {
     @ManyToOne
     private Course course;
 
-    private String filePath;
+    private LocalDateTime issuedAt;
 
-    private LocalDateTime issuedAt = LocalDateTime.now();
+    private String certificateUrl;
 
     // getters & setters
     public Long getId() { return id; }
@@ -31,8 +31,11 @@ public class Certificate {
     public Course getCourse() { return course; }
     public void setCourse(Course course) { this.course = course; }
 
-    public String getfilePath() { return filePath; }
-    public void setfilePath(String filePath) { this.filePath = filePath; }
-
     public LocalDateTime getIssuedAt() { return issuedAt; }
+    public void setIssuedAt(LocalDateTime issuedAt) { this.issuedAt = issuedAt; }
+
+    public String getCertificateUrl() { return certificateUrl; }
+    public void setCertificateUrl(String certificateUrl) {
+        this.certificateUrl = certificateUrl;
+    }
 }

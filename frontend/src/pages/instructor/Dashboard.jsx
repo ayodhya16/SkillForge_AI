@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "../../api/axiosInstance";
 import Card from "../../components/Card";
 
-export default function InstructorDashboard() {
+export default function Dashboard() {
   const [courses, setCourses] = useState([]);
   const [stats, setStats] = useState({
     totalCourses: 0,
